@@ -1,0 +1,31 @@
+/* Responsive design media queries */
+
+/* Tablet devices */
+@media (max-width: 768px) {
+    /* gallery removed */
+
+    .countdown-container {
+        gap: 1rem;
+    }
+
+    .countdown-number {
+        font-size: 2rem;
+    }
+}
+
+/* Mobile devices */
+@media (max-width: 480px) {
+    body {
+        font-size: 14px;
+    }
+
+    /* gallery removed */
+
+    .countdown-container {
+        flex-direction: column;
+    }
+
+    section {
+        padding: 2rem 1rem !important;
+    }
+}

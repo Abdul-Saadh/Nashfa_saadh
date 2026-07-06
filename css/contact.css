@@ -1,0 +1,30 @@
+/* Contact section styles */
+
+#contact {
+    padding: 5rem 2rem;
+    background: #f5f5f5;
+}
+
+.contact-container {
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.contact-item {
+    margin: 2rem 0;
+    padding: 1rem;
+    background: white;
+    border-radius: 5px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.contact-icon {
+    display: inline-block;
+    margin-right: 1rem;
+    color: #667eea;
+    font-size: 1.5rem;
+}
+
+.contact-text {
+    color: #666;
+}

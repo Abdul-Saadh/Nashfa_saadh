@@ -1,0 +1,30 @@
+/* Countdown timer styles */
+
+#countdown {
+    padding: 5rem 2rem;
+    background: #f5f5f5;
+    text-align: center;
+}
+
+.countdown-container {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    flex-wrap: wrap;
+}
+
+.countdown-item {
+    text-align: center;
+}
+
+.countdown-number {
+    font-size: 3rem;
+    font-weight: bold;
+    color: #667eea;
+}
+
+.countdown-label {
+    font-size: 1rem;
+    color: #666;
+    margin-top: 0.5rem;
+}

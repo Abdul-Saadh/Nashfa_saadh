@@ -1,0 +1,59 @@
+# IDE and Editor Files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+*.sublime-project
+*.sublime-workspace
+
+# Node & npm (if using npm in future)
+node_modules/
+package-lock.json
+yarn.lock
+
+# Build & Distribution
+dist/
+build/
+*.min.js
+*.min.css
+
+# Environment Files
+.env
+.env.local
+.env.*.local
+
+# OS Files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+desktop.ini
+
+# Temporary Files
+*.tmp
+*.bak
+*.log
+*.cache
+.cache/
+
+# Backup Files
+*.backup
+*.old
+*-old.*
+
+# Test Coverage
+coverage/
+.nyc_output/
+
+# Module Dependencies (future)
+pnpm-lock.yaml
+
+# Compiled files
+*.pyc
+*.class
+*.jar
