@@ -685,6 +685,144 @@ class AccessibilityHelper {
     }
 })();
 
+// ===== Mouse Glitter =====
+class MouseGlitter {
+    constructor() {
+        this.container = document.getElementById('glitter-layer');
+        this.init();
+    }
+
+    init() {
+        if (window.matchMedia('(pointer: coarse)').matches) return;
+
+        if (!this.container) {
+            this.container = document.createElement('div');
+            this.container.id = 'glitter-layer';
+            document.body.appendChild(this.container);
+        }
+
+        document.addEventListener('pointermove', this.handlePointerMove.bind(this), { passive: true });
+        document.addEventListener('pointerleave', this.handlePointerLeave.bind(this));
+    }
+
+    createParticle(x, y) {
+        if (!this.container) return;
+
+        const particle = document.createElement('span');
+        const size = (Math.random() * 4.5) + 3;
+        const driftX = (Math.random() - 0.5) * 42;
+        const driftY = (Math.random() - 0.5) * 36;
+        const duration = 520 + (Math.random() * 760);
+        const hue = 36 + (Math.random() * 28);
+
+        particle.className = 'glitter-particle';
+        particle.style.left = `${x}px`;
+        particle.style.top = `${y}px`;
+        particle.style.setProperty('--size', `${size}px`);
+        particle.style.setProperty('--drift-x', `${driftX}px`);
+        particle.style.setProperty('--drift-y', `${driftY}px`);
+        particle.style.setProperty('--duration', `${duration}ms`);
+        particle.style.setProperty('--hue', `${hue}`);
+
+        this.container.appendChild(particle);
+        setTimeout(() => particle.remove(), duration + 180);
+    }
+
+    handlePointerMove(event) {
+        if (!this.container) return;
+
+        const burstCount = window.innerWidth < 768 ? 1 : 2;
+        for (let i = 0; i < burstCount; i += 1) {
+            const offsetX = (Math.random() - 0.5) * 18;
+            const offsetY = (Math.random() - 0.5) * 18;
+            this.createParticle(event.clientX + offsetX, event.clientY + offsetY);
+        }
+    }
+
+    handlePointerLeave() {
+        if (this.container) this.container.innerHTML = '';
+    }
+}
+
+// ===== Wedding Live Stream Config =====
+// Set this to the YouTube Live URL on the wedding day.
+// Example: https://www.youtube.com/watch?v=XXXXXXXXXXX
+window.WEDDING_LIVE_URL = '';
+
+class LiveStreamHandler {
+    constructor() {
+        this.liveLink = document.getElementById('live-link');
+        this.liveStatus = document.getElementById('live-status');
+        this.liveActions = document.getElementById('live-actions');
+        this.livePlayerWrap = document.getElementById('live-player-wrap');
+        this.livePlayer = document.getElementById('live-player');
+        this.init();
+    }
+
+    init() {
+        const liveUrl = (window.WEDDING_LIVE_URL || '').trim();
+
+        if (!liveUrl) {
+            this.showDefaultState();
+            return;
+        }
+
+        const videoId = this.extractYouTubeVideoId(liveUrl);
+
+        if (!videoId) {
+            this.showDefaultState();
+            return;
+        }
+
+        this.renderLiveStream(liveUrl, videoId);
+    }
+
+    extractYouTubeVideoId(url) {
+        try {
+            const parsed = new URL(url);
+            const host = parsed.hostname.replace(/^www\./, '');
+
+            if (host === 'youtu.be') {
+                return parsed.pathname.replace('/', '').split('/')[0];
+            }
+
+            if (host === 'youtube.com' || host.endsWith('.youtube.com')) {
+                if (parsed.searchParams.get('v')) return parsed.searchParams.get('v');
+                if (parsed.pathname.includes('/embed/')) return parsed.pathname.split('/embed/')[1].split('/')[0];
+                if (parsed.pathname.includes('/shorts/')) return parsed.pathname.split('/shorts/')[1].split('/')[0];
+                if (parsed.pathname.includes('/live/')) return parsed.pathname.split('/live/')[1].split('/')[0];
+            }
+        } catch (err) {}
+        return null;
+    }
+
+    showDefaultState() {
+        if (this.liveStatus) {
+            this.liveStatus.textContent = 'Live streaming link will be updated on the wedding day.';
+        }
+
+        if (this.liveActions) this.liveActions.hidden = true;
+        if (this.livePlayerWrap) this.livePlayerWrap.hidden = true;
+    }
+
+    renderLiveStream(liveUrl, videoId) {
+        if (this.liveStatus) {
+            this.liveStatus.textContent = 'We are live now — join us!';
+        }
+
+        if (this.liveLink) {
+            this.liveLink.href = liveUrl;
+            this.liveLink.textContent = 'Watch Live';
+        }
+
+        if (this.liveActions) this.liveActions.hidden = false;
+
+        if (this.livePlayer && this.livePlayerWrap) {
+            this.livePlayer.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1&rel=0`;
+            this.livePlayerWrap.hidden = false;
+        }
+    }
+}
 // ===== App Initialization =====
 class WeddingWebsiteApp {
     constructor() {
@@ -714,6 +852,8 @@ class WeddingWebsiteApp {
             new CountdownTimer();
             new ScrollAnimations();
             new ElementAnimation();
+            new MouseGlitter();
+            new LiveStreamHandler();
             new LazyImageLoader();
             new PerformanceOptimizer();
             new FormHandler();
