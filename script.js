@@ -693,7 +693,7 @@ class MouseGlitter {
     }
 
     init() {
-        if (window.matchMedia('(pointer: coarse)').matches) return;
+        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
         if (!this.container) {
             this.container = document.createElement('div');
@@ -701,8 +701,15 @@ class MouseGlitter {
             document.body.appendChild(this.container);
         }
 
+        this.lastTouchTime = 0;
+
         document.addEventListener('pointermove', this.handlePointerMove.bind(this), { passive: true });
         document.addEventListener('pointerleave', this.handlePointerLeave.bind(this));
+
+        if (window.matchMedia('(pointer: coarse)').matches) {
+            document.addEventListener('touchstart', this.handleTouchMove.bind(this), { passive: true });
+            document.addEventListener('touchmove', this.handleTouchMove.bind(this), { passive: true });
+        }
     }
 
     createParticle(x, y) {
@@ -729,13 +736,28 @@ class MouseGlitter {
     }
 
     handlePointerMove(event) {
-        if (!this.container) return;
+        if (!this.container || event.pointerType === 'touch') return;
 
         const burstCount = window.innerWidth < 768 ? 1 : 2;
         for (let i = 0; i < burstCount; i += 1) {
             const offsetX = (Math.random() - 0.5) * 18;
             const offsetY = (Math.random() - 0.5) * 18;
             this.createParticle(event.clientX + offsetX, event.clientY + offsetY);
+        }
+    }
+
+    handleTouchMove(event) {
+        if (!event.touches || event.touches.length === 0) return;
+
+        const now = performance.now();
+        if (now - this.lastTouchTime < 20) return;
+        this.lastTouchTime = now;
+
+        const touch = event.touches[0];
+        for (let i = 0; i < 2; i += 1) {
+            const offsetX = (Math.random() - 0.5) * 10;
+            const offsetY = (Math.random() - 0.5) * 10;
+            this.createParticle(touch.clientX + offsetX, touch.clientY + offsetY);
         }
     }
 

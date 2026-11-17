@@ -36,6 +36,7 @@ html {
 }
 
 body {
+    min-height: 100vh;
     font-family: var(--font-body);
     background-color: var(--color-bg);
     color: var(--color-text);
@@ -227,7 +228,7 @@ a:hover {
     display: flex;
     align-items: center;
     justify-content: center;
-    background: linear-gradient(135deg, #FAF8F4 0%, #F5F1E8 100%);
+    background: linear-gradient(rgba(250, 248, 244, 0.18), rgba(250, 248, 244, 0.18)), url('assets/images/backgrounds/floral-mosque.png') center / cover no-repeat;
 }
 
 .hero-container {
@@ -315,10 +316,78 @@ a:hover {
 }
 
 .wedding-date-info {
-    font-size: 1.1rem;
-    color: var(--color-text);
-    margin-bottom: 0;
-    font-weight: 500;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 0.65rem;
+    width: fit-content;
+    max-width: 100%;
+    margin: 0 auto;
+    padding: 0.75rem 1.25rem;
+    border: 1px solid rgba(176, 141, 87, 0.25);
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.55);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    box-shadow: 0 8px 24px rgba(77, 59, 47, 0.12);
+    color: var(--color-gold-dark);
+    font-family: var(--font-heading);
+    letter-spacing: 0.12em;
+}
+
+.wedding-date {
+    font-size: 2.025rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    background: linear-gradient(110deg, var(--color-gold-dark), #d9bd82, var(--color-gold-dark));
+    background-size: 220% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    animation: dateShimmer 4.5s ease-in-out infinite;
+}
+
+.wedding-date span {
+    font-style: italic;
+    text-transform: none;
+    letter-spacing: 0.08em;
+}
+
+.wedding-time {
+    font-size: 1.575rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    background: linear-gradient(110deg, var(--color-gold-dark), #d9bd82, var(--color-gold-dark));
+    background-size: 220% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    animation: dateShimmer 4.5s ease-in-out infinite;
+}
+
+.date-divider {
+    width: 1px;
+    height: 1.8rem;
+    margin: 0 0.25rem;
+    background: linear-gradient(transparent, var(--color-gold), transparent);
+}
+
+.date-ornament {
+    color: var(--color-gold);
+    font-size: 0.75rem;
+    animation: ornamentGlow 2.4s ease-in-out infinite;
+}
+
+@keyframes dateShimmer {
+    0%, 100% { background-position: 100% 50%; }
+    50% { background-position: 0 50%; }
+}
+
+@keyframes ornamentGlow {
+    0%, 100% { opacity: 0.55; transform: scale(0.85) rotate(0deg); }
+    50% { opacity: 1; transform: scale(1.15) rotate(45deg); }
 }
 
 .our-beginning {
@@ -428,6 +497,10 @@ a:hover {
 section {
     padding: 5rem 2rem;
     position: relative;
+    background-image: linear-gradient(rgba(250, 248, 244, 0.18), rgba(250, 248, 244, 0.18)), url('assets/images/backgrounds/floral-mosque.png');
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
 }
 
 .section-title {
@@ -460,7 +533,9 @@ section {
 
 /* Events Section */
 .events {
-    background: linear-gradient(135deg, #FFFFFF 0%, #FAF8F4 100%);
+    background:
+        linear-gradient(rgba(250, 248, 244, 0.18), rgba(250, 248, 244, 0.18)),
+        url('assets/images/backgrounds/wedding-events.png') center / cover no-repeat;
 }
 
 .events-container {
@@ -665,7 +740,9 @@ section {
 
 /* Contact Section */
 .contact {
-    background: linear-gradient(135deg, #FFFFFF 0%, #FAF8F4 100%);
+    background:
+        linear-gradient(rgba(250, 248, 244, 0.18), rgba(250, 248, 244, 0.18)),
+        url('assets/images/backgrounds/floral-mosque.png') center / cover no-repeat;
 }
 
 .contact-container {
@@ -884,6 +961,10 @@ section {
 
 /* Responsive Design */
 @media (max-width: 768px) {
+    body {
+        background-attachment: scroll;
+    }
+
     .hamburger {
         display: flex;
     }
@@ -1001,6 +1082,19 @@ section {
 
     .countdown-number {
         font-size: 1.8rem;
+    }
+
+    .wedding-date-info {
+        gap: 0.45rem;
+        padding: 0.65rem 0.75rem;
+    }
+
+    .wedding-date {
+        font-size: 1.68rem;
+    }
+
+    .wedding-time {
+        font-size: 1.2rem;
     }
 
     .countdown-label {
