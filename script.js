@@ -693,7 +693,7 @@ class MouseGlitter {
     }
 
     init() {
-        if (window.matchMedia('(pointer: coarse)').matches) return;
+        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
         if (!this.container) {
             this.container = document.createElement('div');
@@ -701,8 +701,16 @@ class MouseGlitter {
             document.body.appendChild(this.container);
         }
 
+        this.lastScrollY = window.scrollY;
+        this.scrollFramePending = false;
+
         document.addEventListener('pointermove', this.handlePointerMove.bind(this), { passive: true });
         document.addEventListener('pointerleave', this.handlePointerLeave.bind(this));
+
+        if (window.matchMedia('(pointer: coarse)').matches) {
+            document.addEventListener('touchmove', this.handleTouchMove.bind(this), { passive: true });
+            window.addEventListener('scroll', this.handleScroll.bind(this), { passive: true });
+        }
     }
 
     createParticle(x, y) {
@@ -737,6 +745,34 @@ class MouseGlitter {
             const offsetY = (Math.random() - 0.5) * 18;
             this.createParticle(event.clientX + offsetX, event.clientY + offsetY);
         }
+    }
+
+    handleTouchMove(event) {
+        if (!event.touches || event.touches.length === 0) return;
+
+        const touch = event.touches[0];
+        const burstCount = 2;
+        for (let i = 0; i < burstCount; i += 1) {
+            const offsetX = (Math.random() - 0.5) * 16;
+            const offsetY = (Math.random() - 0.5) * 16;
+            this.createParticle(touch.clientX + offsetX, touch.clientY + offsetY);
+        }
+    }
+
+    handleScroll() {
+        if (this.scrollFramePending) return;
+
+        this.scrollFramePending = true;
+        window.requestAnimationFrame(() => {
+            const scrollY = window.scrollY;
+            if (Math.abs(scrollY - this.lastScrollY) > 2) {
+                const y = window.innerHeight * (0.35 + (Math.random() * 0.45));
+                const x = window.innerWidth * (0.15 + (Math.random() * 0.7));
+                this.createParticle(x, y);
+                this.lastScrollY = scrollY;
+            }
+            this.scrollFramePending = false;
+        });
     }
 
     handlePointerLeave() {
